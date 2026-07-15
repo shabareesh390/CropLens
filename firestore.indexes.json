@@ -1,0 +1,22 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "applications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "officerId", "order": "ASCENDING" },
+        { "fieldPath": "submittedAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "applications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "officerId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "submittedAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

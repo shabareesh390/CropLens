@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "dist",
+
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
