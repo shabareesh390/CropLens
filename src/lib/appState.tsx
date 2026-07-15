@@ -91,10 +91,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
           if (officerDoc.exists()) {
             setOfficer(officerDoc.data() as Officer);
           } else {
-            console.error("Officer document not found for user:", user.uid);
+            console.warn("Officer document not found for user:", user.uid, "- using default officer profile.");
+            setOfficer({
+              name: user.displayName || user.email?.split('@')[0] || "User",
+              role: "Credit Officer",
+              branch: "Main Branch",
+              initials: (user.displayName || user.email || "U").substring(0, 2).toUpperCase(),
+              assignedDistricts: DISTRICTS,
+            });
           }
         } catch (error) {
           console.error("Error fetching officer:", error);
+          // Fallback on error too
+          setOfficer({
+            name: user.displayName || user.email?.split('@')[0] || "User",
+            role: "Credit Officer",
+            branch: "Main Branch",
+            initials: "U",
+            assignedDistricts: DISTRICTS,
+          });
         }
 
         // Fetch applications

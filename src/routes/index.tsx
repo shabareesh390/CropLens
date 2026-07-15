@@ -9,22 +9,31 @@ import { auth } from "@/lib/firebase";
 export const Route = createFileRoute("/")({ component: Dashboard });
 
 function Dashboard() {
-  const { apps } = useApps();
+  const { apps, officer } = useApps();
   const [loading, setLoading] = useState(true);
   useEffect(() => { const t = setTimeout(() => setLoading(false), 550); return () => clearTimeout(t); }, []);
   const nav = useNavigate();
 
   const user = auth.currentUser;
-  const name = user?.displayName || user?.email?.split('@')[0] || "User";
+  const name = officer?.name || user?.displayName || user?.email?.split('@')[0] || "User";
 
   const approved = apps.filter(a => a.status === "approved").length;
-  const rate = Math.round((approved / apps.length) * 100);
-  const pipeline = apps.reduce((s, a) => s + a.loanAmount, 0);
+  const rate = apps.length ? Math.round((approved / apps.length) * 100) : 0;
+  const pipeline = apps.reduce((s, a) => s + (a.loanAmount || 0), 0);
 
-  const trend = [
-    { m: "Jan", v: 64 }, { m: "Feb", v: 71 }, { m: "Mar", v: 85 },
-    { m: "Apr", v: 96 }, { m: "May", v: 110 }, { m: "Jun", v: 128 },
-  ];
+  const trend = useMemo(() => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const counts: Record<string, number> = {};
+    apps.forEach(a => {
+      if (a.submittedAt) {
+        const m = months[new Date(a.submittedAt).getMonth()];
+        counts[m] = (counts[m] || 0) + 1;
+      }
+    });
+    const keys = Object.keys(counts).sort((a, b) => months.indexOf(a) - months.indexOf(b));
+    if (keys.length === 0) return [{ m: months[new Date().getMonth()], v: 0 }];
+    return keys.map(m => ({ m, v: counts[m] }));
+  }, [apps]);
   const donut = useMemo(() => {
     const c = { approved: 0, pending: 0, review: 0, declined: 0 };
     apps.forEach(a => { c[a.status]++; });
@@ -40,8 +49,8 @@ function Dashboard() {
     <div className="space-y-7">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="text-[0.74rem] font-bold uppercase tracking-wider" style={{ color: "var(--field-ink)" }}>Overview</div>
-          <h1 className="num font-semibold text-[1.7rem] mt-1 uppercase">HELLO , {name}</h1>
+          <div className="text-[0.74rem] font-bold tracking-wider" style={{ color: "var(--field-ink)" }}>Overview</div>
+          <h1 className="num font-semibold text-[1.7rem] mt-1 ">Hello, {name}</h1>
           <p className="mt-1 text-[0.92rem]" style={{ color: "var(--ink-muted)" }}>Here's how the KCC assessment pipeline looks across your branch today.</p>
         </div>
         <button onClick={() => nav({ to: "/new" })} className="btn-primary px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2">
@@ -50,10 +59,10 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KPI loading={loading} icon={<FileText size={18} />} tone="green" label="Applications this month" value="128" delta={{ text: "+18% vs last month", up: true }} />
-        <KPI loading={loading} icon={<ShieldCheck size={18} />} tone="green" label="Approval rate" value={`${rate}%`} delta={{ text: "+4 pts vs last month", up: true }} />
-        <KPI loading={loading} icon={<Clock size={18} />} tone="gold" label="Avg. assessment time" value="4.2 min" delta={{ text: "vs 18 days, manual", up: null }} />
-        <KPI loading={loading} icon={<IndianRupee size={18} />} tone="gold" label="Pipeline value" value={fmtINR(pipeline)} delta={{ text: "+₹62L this month", up: true }} />
+        <KPI loading={loading} icon={<FileText size={18} />} tone="green" label="Total applications" value={apps.length.toString()} delta={{ text: "", up: null }} />
+        <KPI loading={loading} icon={<ShieldCheck size={18} />} tone="green" label="Approval rate" value={`${rate}%`} delta={{ text: "", up: null }} />
+        <KPI loading={loading} icon={<Clock size={18} />} tone="gold" label="Avg. assessment time" value="< 5 min" delta={{ text: "", up: null }} />
+        <KPI loading={loading} icon={<IndianRupee size={18} />} tone="gold" label="Pipeline value" value={fmtINR(pipeline)} delta={{ text: "", up: null }} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
@@ -61,7 +70,7 @@ function Dashboard() {
           <div className="flex items-baseline justify-between mb-4">
             <div>
               <div className="text-[0.95rem] font-semibold">Applications received</div>
-              <div className="text-[0.78rem]" style={{ color: "var(--ink-muted)" }}>Last 6 months</div>
+              <div className="text-[0.78rem]" style={{ color: "var(--ink-muted)" }}>This year</div>
             </div>
             <div className="mono text-[0.72rem]" style={{ color: "var(--ink-faint)" }}>SBI · KA REGION</div>
           </div>
@@ -122,7 +131,7 @@ function Dashboard() {
         <table className="w-full text-[0.85rem]">
           <thead>
             <tr className="text-left" style={{ color: "var(--ink-faint)" }}>
-              {["Farmer","District","Crop","Score","Amount","Status",""].map((h) => (
+              {["Farmer", "District", "Crop", "Score", "Amount", "Status", ""].map((h) => (
                 <th key={h} className="px-5 py-3 font-semibold text-[0.72rem] uppercase tracking-wider">{h}</th>
               ))}
             </tr>

@@ -65,8 +65,8 @@ export function Sidebar({ onNavigate, user }: { onNavigate?: () => void; user?: 
       </nav>
       <div className="px-4 pb-4">
         <div className="rounded-[14px] p-4 mb-4" style={{ background: "var(--canopy-2)" }}>
-          <div className="text-[0.78rem] font-semibold mb-1">Pilot coverage</div>
-          <div className="text-[0.75rem] leading-relaxed" style={{ color: "rgba(255,255,255,.65)" }}>Live across 8 districts in Karnataka. Statewide rollout planned for FY27.</div>
+          <div className="text-[0.78rem] font-semibold mb-1">Coverage</div>
+          <div className="text-[0.75rem] leading-relaxed" style={{ color: "rgba(255,255,255,.65)" }}>Active across your assigned districts.</div>
         </div>
         <div className="pt-3 border-t flex items-center gap-3" style={{ borderColor: "rgba(255,255,255,.08)" }}>
           {user?.photoURL ? (

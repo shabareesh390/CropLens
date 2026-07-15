@@ -7,6 +7,20 @@ import { ResultPanel } from "@/components/ResultPanel";
 import { collection, addDoc, serverTimestamp, updateDoc, doc, arrayUnion } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { db, auth, functions } from "@/lib/firebase";
+import { lazy, Suspense } from "react";
+
+const LazyMap = lazy(() => import("@/components/InteractiveParcelMap"));
+
+function MapWrapper(props: any) {
+  if (typeof window === "undefined") {
+    return <div className="rounded-[14px] flex items-center justify-center text-white" style={{ background: "#13361F", aspectRatio: "16/10" }}>Loading satellite...</div>;
+  }
+  return (
+    <Suspense fallback={<div className="rounded-[14px] flex items-center justify-center text-white" style={{ background: "#13361F", aspectRatio: "16/10" }}>Loading satellite...</div>}>
+      <LazyMap {...props} />
+    </Suspense>
+  );
+}
 
 export const Route = createFileRoute("/new")({
   head: () => ({ meta: [{ title: "New assessment · CropLens" }, { name: "description", content: "Run a Sentinel-2 satellite assessment for a KCC applicant in 4 minutes." }] }),
@@ -250,7 +264,7 @@ function Step1(props: {
       <div className="pt-4 border-t" style={{ borderColor: "var(--border-soft)" }}>
         <div className="text-[0.9rem] font-semibold mb-3">Land parcel preview</div>
         <div className="grid gap-5 md:grid-cols-[1.1fr_1fr] items-start">
-          <ParcelSVG confirmed={boundaryConfirmed} />
+          <MapWrapper rorId={form.rorId} district={form.district} confirmed={boundaryConfirmed} />
           <div>
             <p className="text-[0.85rem]" style={{ color: "var(--ink-muted)" }}>
               We've located the parcel from the RoR number and district registry. Confirm the boundary matches the applicant's holding before running assessment.
@@ -280,27 +294,6 @@ function Step1(props: {
   );
 }
 type Step1 = React.ComponentProps<typeof Step1>;
-
-function ParcelSVG({ confirmed }: { confirmed: boolean }) {
-  return (
-    <div className="relative rounded-[14px] overflow-hidden" style={{ background: "#13361F", aspectRatio: "16/10" }}>
-      <svg viewBox="0 0 400 250" className="w-full h-full">
-        <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M20 0L0 0L0 20" fill="none" stroke="rgba(255,255,255,.06)" strokeWidth="1" />
-        </pattern></defs>
-        <rect width="400" height="250" fill="url(#grid)" />
-        <polygon points="90,60 300,45 350,140 220,210 70,170"
-          fill="rgba(127,217,161,.18)" stroke="#7FD9A1" strokeWidth="1.8"
-          strokeDasharray={confirmed ? "0" : "6 4"} />
-        <circle cx="200" cy="130" r="4" fill="#C8932A" stroke="#13361F" strokeWidth="1.5" />
-      </svg>
-      <div className="absolute top-3 left-3 mono text-[0.68rem] px-2 py-1 rounded-md text-white"
-        style={{ background: "rgba(10,25,15,.65)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,.12)" }}>
-        15.4218° N, 75.0091° E
-      </div>
-    </div>
-  );
-}
 
 function Step2({ app, onDone, onError }: { app: any; onDone: (res: any) => void; onError: () => void }) {
   const steps = [
@@ -378,7 +371,7 @@ function Step2({ app, onDone, onError }: { app: any; onDone: (res: any) => void;
       </div>
 
       <div className="mt-6 pt-5 flex items-center justify-between border-t" style={{ borderColor: "var(--border-soft)" }}>
-        <div className="mono text-[0.75rem]" style={{ color: "var(--ink-faint)" }}>Estimated time: 4 min · demo accelerated</div>
+        <div className="mono text-[0.75rem]" style={{ color: "var(--ink-faint)" }}>Estimated time: &lt; 1 min</div>
         <button onClick={() => onDone(functionResult)} disabled={!allDone} className="btn-primary px-5 py-2.5 rounded-[12px] text-[0.9rem] font-semibold inline-flex items-center gap-2">
           View eligibility result <ArrowRight size={16} />
         </button>
