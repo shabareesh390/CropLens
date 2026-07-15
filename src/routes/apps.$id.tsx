@@ -94,13 +94,13 @@ function Detail() {
           onFocus={(e) => { e.currentTarget.style.borderColor = "var(--field)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(31,122,77,.14)"; }}
           onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }} />
         <div className="mt-4 flex flex-wrap gap-3">
-          <button onClick={() => decide("approved")} disabled={app.status === "approved"} className="btn-primary px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2">
+          <button onClick={() => decide("approved")} disabled={app.status === "approved" || app.status === "scanning"} className="btn-primary px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 disabled:opacity-50">
             <CheckCircle2 size={16} /> Approve KCC
           </button>
-          <button onClick={() => decide("review")} disabled={app.status === "review"} className="btn-gold px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 disabled:opacity-50">
+          <button onClick={() => decide("review")} disabled={app.status === "review" || app.status === "scanning"} className="btn-gold px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 disabled:opacity-50">
             <AlertTriangle size={16} /> Send for field verification
           </button>
-          <button onClick={() => decide("declined")} disabled={app.status === "declined"} className="px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 border disabled:opacity-50"
+          <button onClick={() => decide("declined")} disabled={app.status === "declined" || app.status === "scanning"} className="px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 border disabled:opacity-50"
             style={{ color: "var(--danger)", borderColor: "var(--danger)", background: "#fff" }}>
             <XCircle size={16} /> Decline
           </button>
