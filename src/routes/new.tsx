@@ -174,7 +174,7 @@ function Stepper({ step }: { step: number }) {
               </div>
               <span className="text-[0.85rem] font-semibold" style={{ color: state === "idle" ? "var(--ink-faint)" : "var(--ink)" }}>{label}</span>
             </div>
-            {i < STEPS.length - 1 && <div className="w-12 h-[2px]" style={{ background: i < step ? "var(--field)" : "var(--border)" }} />}
+            {i < STEPS.length - 1 && <div className="hidden sm:block w-12 h-[2px]" style={{ background: i < step ? "var(--field)" : "var(--border)" }} />}
           </div>
         );
       })}

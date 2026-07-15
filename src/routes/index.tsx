@@ -128,36 +128,38 @@ function Dashboard() {
           <div className="text-[0.95rem] font-semibold">Recent applications</div>
           <Link to="/applications" className="text-[0.82rem] font-semibold inline-flex items-center gap-1" style={{ color: "var(--field-ink)" }}>View all <ArrowUpRight size={14} /></Link>
         </div>
-        <table className="w-full text-[0.85rem]">
-          <thead>
-            <tr className="text-left" style={{ color: "var(--ink-faint)" }}>
-              {["Farmer", "District", "Crop", "Score", "Amount", "Status", ""].map((h) => (
-                <th key={h} className="px-5 py-3 font-semibold text-[0.72rem] uppercase tracking-wider">{h}</th>
+        <div className="overflow-x-auto">
+          <table className="w-full text-[0.85rem] whitespace-nowrap">
+            <thead>
+              <tr className="text-left" style={{ color: "var(--ink-faint)" }}>
+                {["Farmer", "District", "Crop", "Score", "Amount", "Status", ""].map((h) => (
+                  <th key={h} className="px-5 py-3 font-semibold text-[0.72rem] uppercase tracking-wider">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i} className="border-t" style={{ borderColor: "var(--border-soft)" }}>
+                  {Array.from({ length: 7 }).map((_, j) => <td key={j} className="px-5 py-4"><div className="h-4 rounded shimmer" /></td>)}
+                </tr>
+              )) : apps.slice(0, 6).map((a) => (
+                <tr key={a.id} onClick={() => nav({ to: "/apps/$id", params: { id: a.id } })}
+                  className="border-t cursor-pointer transition-colors hover:bg-[#F3F8F4]" style={{ borderColor: "var(--border-soft)" }}>
+                  <td className="px-5 py-4">
+                    <div className="font-semibold">{a.name}</div>
+                    <div className="mono text-[0.72rem]" style={{ color: "var(--ink-faint)" }}>{a.id}</div>
+                  </td>
+                  <td className="px-5 py-4" style={{ color: "var(--ink-muted)" }}>{a.district}</td>
+                  <td className="px-5 py-4"><CropTag crop={a.crop} /></td>
+                  <td className="px-5 py-4 num font-bold" style={{ fontVariantNumeric: "tabular-nums" }}>{a.score}</td>
+                  <td className="px-5 py-4 mono">{fmtINR(a.loanAmount)}</td>
+                  <td className="px-5 py-4"><StatusBadge status={a.status} /></td>
+                  <td className="px-5 py-4 text-right"><ChevronRight size={16} style={{ color: "var(--ink-faint)" }} /></td>
+                </tr>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? Array.from({ length: 5 }).map((_, i) => (
-              <tr key={i} className="border-t" style={{ borderColor: "var(--border-soft)" }}>
-                {Array.from({ length: 7 }).map((_, j) => <td key={j} className="px-5 py-4"><div className="h-4 rounded shimmer" /></td>)}
-              </tr>
-            )) : apps.slice(0, 6).map((a) => (
-              <tr key={a.id} onClick={() => nav({ to: "/apps/$id", params: { id: a.id } })}
-                className="border-t cursor-pointer transition-colors hover:bg-[#F3F8F4]" style={{ borderColor: "var(--border-soft)" }}>
-                <td className="px-5 py-4">
-                  <div className="font-semibold">{a.name}</div>
-                  <div className="mono text-[0.72rem]" style={{ color: "var(--ink-faint)" }}>{a.id}</div>
-                </td>
-                <td className="px-5 py-4" style={{ color: "var(--ink-muted)" }}>{a.district}</td>
-                <td className="px-5 py-4"><CropTag crop={a.crop} /></td>
-                <td className="px-5 py-4 num font-bold" style={{ fontVariantNumeric: "tabular-nums" }}>{a.score}</td>
-                <td className="px-5 py-4 mono">{fmtINR(a.loanAmount)}</td>
-                <td className="px-5 py-4"><StatusBadge status={a.status} /></td>
-                <td className="px-5 py-4 text-right"><ChevronRight size={16} style={{ color: "var(--ink-faint)" }} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="text-[0.72rem]" style={{ color: "var(--ink-faint)" }}>Last synced {fmtDate(new Date().toISOString())}.</div>
     </div>

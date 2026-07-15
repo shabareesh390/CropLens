@@ -144,7 +144,7 @@ function RootComponent() {
             )}
             <div className="md:ml-[264px] flex flex-col min-h-screen">
               <Topbar onMenu={() => setMobileOpen(true)} user={user} />
-              <main className="flex-1 px-5 md:px-8 pt-7 pb-14 mx-auto w-full" style={{ maxWidth: 1320 }}>
+              <main className="flex-1 px-4 sm:px-5 md:px-8 pt-7 pb-14 mx-auto w-full" style={{ maxWidth: 1320 }}>
                 <Outlet />
               </main>
             </div>
