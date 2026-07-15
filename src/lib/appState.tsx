@@ -11,6 +11,7 @@ export interface Application {
   firestoreId?: string;
   name: string;
   phone: string;
+  aadhaar?: string;
   aadhaarMask: string;
   district: string;
   village: string;

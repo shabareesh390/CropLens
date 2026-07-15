@@ -76,7 +76,8 @@ function NewAssessment() {
     const app: any = {
       id,
       name: form.name, 
-      phone: `${form.mobile.slice(0,4)}•••${form.mobile.slice(7)}`,
+      phone: form.mobile,
+      aadhaar: form.aadhaar,
       aadhaarMask: `•••• •••• ${form.aadhaar.slice(-4)}`,
       aadhaarHash,
       district: form.district, 
