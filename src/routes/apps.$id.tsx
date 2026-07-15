@@ -15,10 +15,17 @@ export const Route = createFileRoute("/apps/$id")({
 
 function Detail() {
   const { id } = Route.useParams();
-  const { apps } = useApps();
+  const { apps, loadingApps } = useApps();
   const nav = useNavigate();
   const app = apps.find(a => a.id === id);
   const [note, setNote] = useState("");
+
+  if (loadingApps) return (
+    <div className="p-14 text-center">
+      <div className="w-8 h-8 border-4 border-[var(--field)] border-t-transparent rounded-full animate-spin mx-auto"></div>
+      <div className="mt-4 text-[0.9rem] font-semibold text-gray-500">Loading application...</div>
+    </div>
+  );
 
   if (!app) return (
     <div className="card-panel p-14 text-center">

@@ -31,8 +31,12 @@ export function ScoreLedger({ app, recommendedLimit }: { app: Application; recom
 
 export function ResultPanel({ app }: { app: Application }) {
   const cd = CROP_DATA[app.crop] ?? CROP_DATA.Paddy;
-  const confidence = Math.min(98, Math.round(84 + app.score / 12));
-  const recommendedLimit = Math.round((app.incomeEst * 0.65) / 1000) * 1000;
+  const score = app.score || 0;
+  const confidence = Math.min(98, Math.round(84 + score / 12));
+  const incomeEst = app.incomeEst || 0;
+  const recommendedLimit = Math.round((incomeEst * 0.65) / 1000) * 1000;
+  const yieldEst = app.yieldEstTonnes || 0;
+  const priceTrend = app.priceTrend || [];
 
   return (
     <div className="space-y-6">
@@ -60,10 +64,10 @@ export function ResultPanel({ app }: { app: Application }) {
             </div>
           </div>
         </MetricCard>
-        <MetricCard tone="gold" icon={<Activity size={18} />} title="Estimated yield" value={`${app.yieldEstTonnes.toFixed(2)} t`}>
+        <MetricCard tone="gold" icon={<Activity size={18} />} title="Estimated yield" value={`${yieldEst.toFixed(2)} t`}>
           <p className="mt-2 text-[0.78rem]" style={{ color: "var(--ink-muted)" }}>From NDVI vegetation-health time series across the parcel boundary.</p>
         </MetricCard>
-        <MetricCard tone="gold" icon={<IndianRupee size={18} />} title="Estimated annual income" value={fmtINR(app.incomeEst)}>
+        <MetricCard tone="gold" icon={<IndianRupee size={18} />} title="Estimated annual income" value={fmtINR(incomeEst)}>
           <p className="mt-2 text-[0.78rem]" style={{ color: "var(--ink-muted)" }}>Yield × district-level mandi price, last 6 months.</p>
         </MetricCard>
       </div>
@@ -78,7 +82,7 @@ export function ResultPanel({ app }: { app: Application }) {
         </div>
         <div style={{ height: 160 }}>
           <ResponsiveContainer>
-            <BarChart data={app.priceTrend.map((v, i) => ({ m: ["Jan","Feb","Mar","Apr","May","Jun"][i], v }))}>
+            <BarChart data={priceTrend.map((v, i) => ({ m: ["Jan","Feb","Mar","Apr","May","Jun"][i], v }))}>
               <CartesianGrid vertical={false} stroke="var(--border-soft)" />
               <XAxis dataKey="m" tick={{ fontSize: 11, fill: "var(--ink-faint)" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: "var(--ink-faint)" }} axisLine={false} tickLine={false} width={48} />

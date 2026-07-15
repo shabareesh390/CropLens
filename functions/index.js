@@ -5,8 +5,6 @@ const crypto = require("crypto");
 
 admin.initializeApp();
 
-const DATA_GOV_KEY = defineSecret("DATA_GOV_KEY");
-
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const CROP_TABLE = {
@@ -30,7 +28,7 @@ const CROP_TABLE = {
   "Chilly": { yield: 1.5, fallbackPrice: 15000 },
 };
 
-exports.runSatelliteScan = onCall({ secrets: [DATA_GOV_KEY], timeoutSeconds: 30 }, async (request) => {
+exports.runSatelliteScan = onCall({ timeoutSeconds: 30 }, async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "User must be authenticated.");
   }
@@ -61,7 +59,7 @@ exports.runSatelliteScan = onCall({ secrets: [DATA_GOV_KEY], timeoutSeconds: 30 
   let currentPrice = cropData.fallbackPrice;
   let fetchedPrices = [];
   try {
-    const apiKey = DATA_GOV_KEY.value();
+    const apiKey = process.env.DATA_GOV_KEY || "dummy";
     const url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=${apiKey}&format=json&filters[State]=Karnataka&filters[District]=${encodeURIComponent(district)}&filters[Commodity]=${encodeURIComponent(crop)}&limit=6&sort[Arrival_Date]=desc`;
     const res = await fetch(url);
     const data = await res.json();

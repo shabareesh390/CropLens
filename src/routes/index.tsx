@@ -35,13 +35,14 @@ function Dashboard() {
     return keys.map(m => ({ m, v: counts[m] }));
   }, [apps]);
   const donut = useMemo(() => {
-    const c = { approved: 0, pending: 0, review: 0, declined: 0 };
-    apps.forEach(a => { c[a.status]++; });
+    const c: Record<string, number> = { approved: 0, pending: 0, review: 0, declined: 0, scanning: 0 };
+    apps.forEach(a => { if (c[a.status] !== undefined) c[a.status]++; });
     return [
       { name: "Approved", value: c.approved, color: "#1F7A4D" },
       { name: "Pending", value: c.pending, color: "#B9C4BD" },
       { name: "Review", value: c.review, color: "#C8932A" },
       { name: "Declined", value: c.declined, color: "#C0392B" },
+      ...(c.scanning > 0 ? [{ name: "Scanning", value: c.scanning, color: "#9CA3AF" }] : [])
     ];
   }, [apps]);
 

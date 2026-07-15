@@ -4,7 +4,7 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { db, auth } from "@/lib/firebase";
 import { toast } from "sonner";
 
-export type AppStatus = "approved" | "pending" | "review" | "declined";
+export type AppStatus = "approved" | "pending" | "review" | "declined" | "scanning";
 
 export interface Application {
   id: string;
@@ -116,8 +116,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // Fetch applications
         const q = query(
           collection(db, "applications"),
-          where("officerId", "==", user.uid),
-          orderBy("submittedAt", "desc")
+          where("officerId", "==", user.uid)
         );
 
         unsubscribeApps = onSnapshot(q, (snapshot) => {
@@ -127,10 +126,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
             fetchedApps.push({
               ...data,
               firestoreId: docSnap.id,
-              submittedAt: data.submittedAt?.toDate ? data.submittedAt.toDate().toISOString() : data.submittedAt,
+              submittedAt: data.submittedAt?.toDate ? data.submittedAt.toDate().toISOString() : data.submittedAt || new Date().toISOString(),
               decidedAt: data.decidedAt?.toDate ? data.decidedAt.toDate().toISOString() : data.decidedAt,
             } as Application);
           });
+          
+          fetchedApps.sort((a, b) => {
+            if (!a.submittedAt) return 1;
+            if (!b.submittedAt) return -1;
+            return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+          });
+          
           setApps(fetchedApps);
           setLoadingApps(false);
         }, (error) => {
@@ -189,5 +195,10 @@ export function scoreBand(score: number): { label: string; narrative: string; to
   return { label: "Not eligible · High risk", narrative: "Crop health and recent price trends do not currently support the requested loan amount.", tone: "bad" };
 }
 
-export const fmtINR = (n: number) => "₹" + n.toLocaleString("en-IN");
-export const fmtDate = (d: string) => new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+export const fmtINR = (n: number | null | undefined) => "₹" + (n || 0).toLocaleString("en-IN");
+export const fmtDate = (d: string | null | undefined) => {
+  if (!d) return "—";
+  const date = new Date(d);
+  if (isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+};
