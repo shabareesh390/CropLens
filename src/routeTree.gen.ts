@@ -9,12 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as NewRouteImport } from './routes/new'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ApplicationsRouteImport } from './routes/applications'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppsIdRouteImport } from './routes/apps.$id'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewRoute = NewRouteImport.update({
   id: '/new',
   path: '/new',
@@ -30,6 +37,11 @@ const ApplicationsRoute = ApplicationsRouteImport.update({
   path: '/applications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,44 +55,81 @@ const AppsIdRoute = AppsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
   '/applications': typeof ApplicationsRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
+  '/settings': typeof SettingsRoute
   '/apps/$id': typeof AppsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
   '/applications': typeof ApplicationsRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
+  '/settings': typeof SettingsRoute
   '/apps/$id': typeof AppsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
   '/applications': typeof ApplicationsRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
+  '/settings': typeof SettingsRoute
   '/apps/$id': typeof AppsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/applications' | '/login' | '/new' | '/apps/$id'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/applications'
+    | '/login'
+    | '/new'
+    | '/settings'
+    | '/apps/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/applications' | '/login' | '/new' | '/apps/$id'
-  id: '__root__' | '/' | '/applications' | '/login' | '/new' | '/apps/$id'
+  to:
+    | '/'
+    | '/analytics'
+    | '/applications'
+    | '/login'
+    | '/new'
+    | '/settings'
+    | '/apps/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/applications'
+    | '/login'
+    | '/new'
+    | '/settings'
+    | '/apps/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyticsRoute: typeof AnalyticsRoute
   ApplicationsRoute: typeof ApplicationsRoute
   LoginRoute: typeof LoginRoute
   NewRoute: typeof NewRoute
+  SettingsRoute: typeof SettingsRoute
   AppsIdRoute: typeof AppsIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/new': {
       id: '/new'
       path: '/new'
@@ -102,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,9 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyticsRoute: AnalyticsRoute,
   ApplicationsRoute: ApplicationsRoute,
   LoginRoute: LoginRoute,
   NewRoute: NewRoute,
+  SettingsRoute: SettingsRoute,
   AppsIdRoute: AppsIdRoute,
 }
 export const routeTree = rootRouteImport

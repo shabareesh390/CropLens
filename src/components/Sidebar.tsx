@@ -10,8 +10,8 @@ const nav: { section: string; items: NavItem[] }[] = [
     { to: "/new", label: "New assessment", icon: PlusCircle },
   ]},
   { section: "MORE", items: [
-    { to: "/analytics", label: "Analytics", icon: BarChart3, disabled: true },
-    { to: "/settings", label: "Settings", icon: Settings, disabled: true },
+    { to: "/analytics", label: "Analytics", icon: BarChart3 },
+    { to: "/settings", label: "Settings", icon: Settings },
   ]},
 ];
 
