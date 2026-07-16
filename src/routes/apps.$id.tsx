@@ -63,7 +63,7 @@ function Detail() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="text-[0.74rem] font-bold uppercase tracking-wider" style={{ color: "var(--field-ink)" }}>Application</div>
-          <h1 className="num font-semibold text-[1.7rem] mt-1">{app.name}</h1>
+          <h1 className="font-serif font-semibold text-[2rem] mt-1 leading-tight text-gray-900 tracking-tight">{app.name}</h1>
           <div className="mono text-[0.8rem] mt-1" style={{ color: "var(--ink-muted)" }}>{app.id} · {app.district}, Karnataka · Submitted {fmtDate(app.submittedAt)}</div>
         </div>
         <StatusBadge status={app.status} />
@@ -89,10 +89,10 @@ function Detail() {
           </div>
         </div>
         <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} placeholder="Add note (optional)…"
-          className="mt-4 w-full p-3 rounded-[12px] border text-[0.88rem] outline-none resize-none"
+          className="mt-4 w-full p-4 rounded-[12px] border text-[0.88rem] outline-none resize-none transition-all shadow-sm"
           style={{ borderColor: "var(--border)" }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = "var(--field)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(31,122,77,.14)"; }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }} />
+          onFocus={(e) => { e.currentTarget.style.borderColor = "var(--field)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(22,90,54,.1)"; }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }} />
         <div className="mt-4 flex flex-wrap gap-3">
           <button onClick={() => decide("approved")} disabled={app.status === "approved" || app.status === "scanning"} className="btn-primary px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 disabled:opacity-50">
             <CheckCircle2 size={16} /> Approve KCC
@@ -100,8 +100,8 @@ function Detail() {
           <button onClick={() => decide("review")} disabled={app.status === "review" || app.status === "scanning"} className="btn-gold px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 disabled:opacity-50">
             <AlertTriangle size={16} /> Send for field verification
           </button>
-          <button onClick={() => decide("declined")} disabled={app.status === "declined" || app.status === "scanning"} className="px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 border disabled:opacity-50"
-            style={{ color: "var(--danger)", borderColor: "var(--danger)", background: "#fff" }}>
+          <button onClick={() => decide("declined")} disabled={app.status === "declined" || app.status === "scanning"} className="px-4 py-2.5 rounded-[12px] text-[0.88rem] font-semibold inline-flex items-center gap-2 border disabled:opacity-50 transition-all hover:bg-red-50 hover:border-red-300 shadow-sm hover:shadow-md"
+            style={{ color: "var(--danger)", borderColor: "var(--border)", background: "#fff" }}>
             <XCircle size={16} /> Decline
           </button>
         </div>
@@ -112,11 +112,11 @@ function Detail() {
 
 function InfoRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-3">
-      <div className="w-9 h-9 rounded-[10px] flex items-center justify-center" style={{ background: "var(--field-light)", color: "var(--field-ink)" }}>{icon}</div>
-      <div>
+    <div className="flex items-start gap-3 p-3 -m-3 rounded-[12px] transition-colors hover:bg-gray-50/50 cursor-default">
+      <div className="w-10 h-10 rounded-[10px] flex items-center justify-center border" style={{ background: "var(--bg)", borderColor: "var(--border-soft)", color: "var(--field-ink)" }}>{icon}</div>
+      <div className="pt-0.5">
         <div className="text-[0.72rem] uppercase tracking-wider font-semibold" style={{ color: "var(--ink-faint)" }}>{label}</div>
-        <div className="text-[0.9rem] font-medium mt-0.5">{children}</div>
+        <div className="text-[0.92rem] font-medium mt-0.5 text-gray-900">{children}</div>
       </div>
     </div>
   );

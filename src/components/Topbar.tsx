@@ -12,15 +12,15 @@ export function Topbar({ onMenu, user }: { onMenu: () => void; user?: User | nul
 
   return (
     <header className="sticky top-0 z-30 h-[64px] flex items-center gap-3 px-4 sm:px-5 md:px-8 border-b"
-      style={{ background: "rgba(245,248,246,.78)", backdropFilter: "blur(14px)", borderColor: "var(--border)" }}>
+      style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(16px)", borderColor: "var(--border)" }}>
       <button onClick={onMenu} className="md:hidden p-2 rounded-lg hover:bg-white/60" aria-label="Menu"><Menu size={20} /></button>
       <div className="relative w-full max-w-[420px] hidden sm:block">
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "var(--ink-faint)" }} />
         <input placeholder="Search farmers, IDs, districts…"
-          className="w-full h-10 pl-9 pr-16 rounded-[12px] bg-white border text-[0.88rem] outline-none transition-shadow"
-          style={{ borderColor: "var(--border)" }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = "var(--field)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(31,122,77,.12)"; }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
+          className="w-full h-10 pl-9 pr-16 rounded-[10px] bg-white border text-[0.88rem] outline-none transition-all shadow-sm"
+          style={{ borderColor: "var(--border)", color: "var(--ink)" }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = "var(--field)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(22,90,54,.1)"; }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "var(--shadow-sm)"; }}
         />
         <kbd className="hidden md:inline-flex absolute right-3 top-1/2 -translate-y-1/2 items-center px-1.5 h-5 rounded mono text-[0.68rem]"
           style={{ background: "var(--border-soft)", color: "var(--ink-muted)" }}>⌘K</kbd>
@@ -34,7 +34,7 @@ export function Topbar({ onMenu, user }: { onMenu: () => void; user?: User | nul
         {showNotifications && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)} />
-            <div className="absolute right-0 mt-2 w-72 rounded-xl shadow-lg bg-white border z-50 overflow-hidden" style={{ borderColor: "var(--border)" }}>
+            <div className="absolute right-0 mt-2 w-72 rounded-[16px] bg-white border z-50 overflow-hidden" style={{ borderColor: "var(--border)", boxShadow: "var(--shadow-lg)" }}>
               <div className="px-4 py-3 border-b" style={{ borderColor: "var(--border-soft)", background: "var(--bg)" }}>
                 <div className="text-[0.85rem] font-semibold">Notifications</div>
               </div>
@@ -58,7 +58,7 @@ export function Topbar({ onMenu, user }: { onMenu: () => void; user?: User | nul
         {showDropdown && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setShowDropdown(false)} />
-            <div className="absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white border py-1 z-50" style={{ borderColor: "var(--border)" }}>
+            <div className="absolute right-0 mt-2 w-48 rounded-[16px] bg-white border py-1 z-50" style={{ borderColor: "var(--border)", boxShadow: "var(--shadow-md)" }}>
               <div className="px-4 py-2 border-b" style={{ borderColor: "var(--border-soft)" }}>
                 <div className="text-[0.8rem] font-semibold truncate">{name}</div>
                 <div className="text-[0.7rem] truncate" style={{ color: "var(--ink-muted)" }}>{officer?.branch || user?.email}</div>

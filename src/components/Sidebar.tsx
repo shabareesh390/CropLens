@@ -49,12 +49,13 @@ export function Sidebar({ onNavigate, user }: { onNavigate?: () => void; user?: 
                 );
                 return (
                   <Link key={it.to} to={it.to as "/"} onClick={onNavigate}
-                    className="flex items-center gap-3 px-3 py-2 rounded-[10px] transition-colors duration-150"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-[8px] transition-colors duration-200 border border-transparent"
                     style={{
-                      background: active ? "var(--canopy-2)" : "transparent",
-                      color: active ? "#fff" : "rgba(255,255,255,.72)",
+                      background: active ? "rgba(255,255,255,0.08)" : "transparent",
+                      borderColor: active ? "rgba(255,255,255,0.05)" : "transparent",
+                      color: active ? "#fff" : "rgba(255,255,255,.65)",
                     }}>
-                    <Icon size={18} color={active ? "#9FE0B8" : "currentColor"} />
+                    <Icon size={18} color={active ? "#9FE0B8" : "currentColor"} className={active ? "opacity-100" : "opacity-80"} />
                     <span className="text-[0.9rem] font-medium">{it.label}</span>
                   </Link>
                 );
@@ -64,8 +65,8 @@ export function Sidebar({ onNavigate, user }: { onNavigate?: () => void; user?: 
         ))}
       </nav>
       <div className="px-4 pb-4">
-        <div className="rounded-[14px] p-4 mb-4" style={{ background: "var(--canopy-2)" }}>
-          <div className="text-[0.78rem] font-semibold mb-1">Coverage</div>
+        <div className="rounded-[12px] p-4 mb-4 border" style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)" }}>
+          <div className="text-[0.78rem] font-semibold mb-1 text-white">Coverage</div>
           <div className="text-[0.75rem] leading-relaxed" style={{ color: "rgba(255,255,255,.65)" }}>Active across your assigned districts.</div>
         </div>
         <div className="pt-3 border-t flex items-center gap-3" style={{ borderColor: "rgba(255,255,255,.08)" }}>

@@ -5,24 +5,24 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --canopy: #13361F;
-  --canopy-2: #1D4A2C;
-  --field: #1F7A4D;
-  --field-dark: #176B41;
-  --field-light: #E7F4EC;
-  --field-ink: #0F5C34;
-  --gold: #C8932A;
-  --gold-light: #FBF1DE;
-  --gold-ink: #8A5E12;
-  --danger: #C0392B;
-  --danger-light: #FBEAE8;
-  --bg: #F5F8F6;
+  --canopy: #0C2114;
+  --canopy-2: #143821;
+  --field: #165A36;
+  --field-dark: #104227;
+  --field-light: #E8F2EC;
+  --field-ink: #0A3D22;
+  --gold: #C28723;
+  --gold-light: #FAF3E6;
+  --gold-ink: #85580C;
+  --danger: #BA3326;
+  --danger-light: #FAE8E6;
+  --bg: #F8FAF9;
   --surface: #FFFFFF;
-  --border: #E1E8E3;
-  --border-soft: #EBF0EC;
-  --ink: #16231C;
-  --ink-muted: #5B6B62;
-  --ink-faint: #8B9A91;
+  --border: #DFE4E1;
+  --border-soft: #ECF0EE;
+  --ink: #0A120E;
+  --ink-muted: #56645D;
+  --ink-faint: #85948C;
 
   --background: var(--bg);
   --foreground: var(--ink);
@@ -42,11 +42,11 @@
   --destructive-foreground: #ffffff;
   --input: var(--border);
   --ring: var(--field);
-  --radius: 0.875rem;
+  --radius: 0.75rem;
 
-  --shadow-sm: 0 1px 2px rgba(15,40,25,.05), 0 1px 1px rgba(15,40,25,.03);
-  --shadow-md: 0 6px 18px rgba(15,40,25,.07), 0 2px 5px rgba(15,40,25,.04);
-  --shadow-lg: 0 20px 48px rgba(15,40,25,.12), 0 6px 14px rgba(15,40,25,.06);
+  --shadow-sm: 0 1px 2px rgba(10,25,16,.04), 0 2px 4px rgba(10,25,16,.02);
+  --shadow-md: 0 4px 12px rgba(10,25,16,.06), 0 1px 3px rgba(10,25,16,.03);
+  --shadow-lg: 0 16px 32px rgba(10,25,16,.1), 0 4px 12px rgba(10,25,16,.04);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Fraunces", ui-serif, Georgia, serif;
@@ -93,8 +93,8 @@
   --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 6px);
-  --radius-2xl: 20px;
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: 16px;
 }
 
 @layer base {
@@ -105,26 +105,29 @@
 }
 
 @utility btn-primary {
-  background-image: linear-gradient(180deg, #23905A, #176B41);
+  background: linear-gradient(180deg, #18683E, #145532);
   color: #fff;
-  box-shadow: 0 1px 2px rgba(15,40,25,.18), 0 6px 14px rgba(23,107,65,.3);
-  transition: filter .15s ease, transform .1s ease, box-shadow .2s ease;
-  &:hover { filter: brightness(1.03); box-shadow: 0 2px 4px rgba(15,40,25,.22), 0 10px 20px rgba(23,107,65,.36); }
-  &:active { transform: scale(.97); }
-  &:disabled { opacity: .5; cursor: not-allowed; filter: grayscale(.3); }
+  border-top: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 1px 2px rgba(10,25,16,.15), 0 4px 12px rgba(20,85,50,.25);
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover { background: linear-gradient(180deg, #1A7043, #155B35); box-shadow: 0 2px 4px rgba(10,25,16,.2), 0 6px 16px rgba(20,85,50,.32); }
+  &:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(10,25,16,.1); }
+  &:disabled { opacity: .5; cursor: not-allowed; filter: grayscale(.4); transform: none; box-shadow: none; }
 }
 @utility btn-gold {
-  background-image: linear-gradient(180deg, #D6A23B, #B8801F);
+  background: linear-gradient(180deg, #CF9129, #B07A20);
   color: #fff;
-  box-shadow: 0 1px 2px rgba(15,40,25,.18), 0 6px 14px rgba(184,128,31,.28);
-  transition: filter .15s ease, transform .1s ease;
-  &:hover { filter: brightness(1.04); }
-  &:active { transform: scale(.97); }
+  border-top: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 1px 2px rgba(10,25,16,.15), 0 4px 12px rgba(176,122,32,.25);
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover { background: linear-gradient(180deg, #D6962A, #B88022); box-shadow: 0 2px 4px rgba(10,25,16,.2), 0 6px 16px rgba(176,122,32,.32); }
+  &:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(10,25,16,.1); }
+  &:disabled { opacity: .5; cursor: not-allowed; filter: grayscale(.4); transform: none; box-shadow: none; }
 }
 @utility card-panel {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: var(--shadow-sm);
 }
 @utility shimmer {
